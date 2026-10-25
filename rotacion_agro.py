@@ -3,12 +3,13 @@ import os
 
 
 ruta_carpeta = os.path.dirname(os.path.abspath(__file__))
-archivos = [f for f in os.listdir(ruta_carpeta) if f.endswith('.csv') or f.endswith('.xlsx')]
+ARCHIVO_INPUT = 'Rotacion.xlsx'
+ARCHIVO_OUTPUT = 'Rotacion_Limpia_Qlik.csv'
+ruta_completa = os.path.join(ruta_carpeta, ARCHIVO_INPUT)
 
-if archivos:
+if os.path.exists(ruta_completa):
     
-    archivo_input = archivos[0] 
-    ruta_completa = os.path.join(ruta_carpeta, archivo_input)
+    archivo_input = ARCHIVO_INPUT
     
     
     if archivo_input.endswith('.csv'):
@@ -92,7 +93,9 @@ if archivos:
 
   
     df_final = pd.DataFrame(nueva_data).drop_duplicates()
-    df_final.to_csv('Rotacion_Limpia_Qlik.csv', index=False, encoding='utf-8-sig')
+    df_final.to_csv(os.path.join(ruta_carpeta, ARCHIVO_OUTPUT), index=False, encoding='utf-8-sig')
     
     print("--- PROCESO COMPLETADO ---")
     print(df_final.head(15))
+else:
+    print(f"No se encontró {ARCHIVO_INPUT} en {ruta_carpeta}")
